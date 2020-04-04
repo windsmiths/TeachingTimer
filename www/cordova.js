@@ -1,0 +1,1 @@
+isPhoneGap = false;
