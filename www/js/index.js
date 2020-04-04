@@ -34,20 +34,10 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-		app.receivedEvent('deviceready');
-	},
-	// Update DOM on a Received Event
-	receivedEvent: function(id) {
-		var parentElement = document.getElementById(id);
-		var listeningElement = parentElement.querySelector('.listening');
-
-		listeningElement.setAttribute('style', 'display:none;');
-
-		log('Received Event: ' + id);
+		log('Received deviceready Event');
 		this.ready = true;
-		initialize();		
-    }
-	
+		initialize();			
+	}	
 };
 
 
@@ -309,8 +299,12 @@ function initialize(){
 		ding = new Audio('audio/Ding.m4a');
 		dingDingDing = new Audio('audio/Ding ding ding.m4a');	
 	}
-	// Do first tick then set to recurr...
+	// Do first tick...
 	onTick()
+	// We're now ready
+	document.getElementById('initialising').style.display = 'none';
+	document.getElementById('deviceready').style.display = 'block';
+	// then set to regular tick...
 	setInterval(onTick, storage.getInt('updateSeconds', 1)*1000);
 }
 

@@ -44,12 +44,14 @@
 </head>
 
 <body>
-    <div class="app">
+	<script type="text/javascript">var isPhoneGap = true;</script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <div class="app" >
         <h1>Mindfulness Teaching Timer</h1>
-        <div id="deviceready" class="blink">
-            <p class="event listening" id="initialising">Initialising...</p>
+        <div id="initialising" class="blink">
+            <p>Initialising...</p>
 		</div>
-		<div>
+		<div id="deviceready" style="display:none">
 			<p>Current Time</p></a>
 			<p id="now" class="timer"></p>
 			<br>
@@ -71,8 +73,7 @@
 			<a href="javascript:playDingDingDing();">Ding*3</a>		
 		</div>			
     </div>
-	<script type="text/javascript">var isPhoneGap = true;</script>
-    <script type="text/javascript" src="cordova.js"></script>
+
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
 	if (!isPhoneGap){
