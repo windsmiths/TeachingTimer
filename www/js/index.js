@@ -28,6 +28,7 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+		document.addEventListener('exit', this.onExit);
     },
     // deviceready Event Handler
     //
@@ -37,7 +38,12 @@ var app = {
 		log('Received deviceready Event');
 		this.ready = true;
 		initialize();			
-	}	
+	},
+	onExit: function() {
+		if(isPhoneGap){
+			window.plugins.insomnia.allowSleepAgain();
+		}
+	}		
 };
 
 
@@ -293,6 +299,7 @@ function initialize(){
 	lessonTimer = new TimerWidget('Lesson', 'lessonTimer', 'lessonText', 3600);
 	intervalTimer = new TimerWidget('Interval', 'intervalTimer', 'intervalText', 600);
 	if (isPhoneGap) {
+		window.plugins.insomnia.keepAwake();
 		ding = new Media(getURL('audio/Ding.m4a'), mediaFound, mediaNotFound);
 		dingDingDing = new Media(getURL('audio/Ding ding ding.m4a'), mediaFound, mediaNotFound);
 	} else {
