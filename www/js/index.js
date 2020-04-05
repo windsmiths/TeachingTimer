@@ -41,6 +41,7 @@ var app = {
 	},
 	onExit: function() {
 		if(isPhoneGap){
+			log('Received exit Event');
 			window.plugins.insomnia.allowSleepAgain();
 		}
 	}		
