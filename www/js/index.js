@@ -21,6 +21,7 @@ var app = {
     initialize: function() {
         this.bindEvents();
 		this.ready = false;
+		this.exiting = false;
     },
     // Bind Event Listeners
     //
@@ -29,16 +30,35 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
 		document.addEventListener('exit', this.onExit);
+		document.addEventListener('backbutton', this.onBackButton, false);
     },
     // deviceready Event Handler
+
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
 		log('Received deviceready Event');
-		this.ready = true;
+		app.ready = true;
 		initialize();			
 	},
+	onBackButton: function() {
+		if(isPhoneGap){
+			log('Received backbutton Event');
+			if(app.exiting){
+				navigator.app.exitApp();
+			}else{
+				app.exiting = true;
+				document.getElementById('exitmessage').style.display = 'block';
+				setTimeout(app.onBackButtonTimeout, 1000);
+			};
+		}
+	},
+	onBackButtonTimeout: function() {
+		log('onBackButtonTimeout');
+		document.getElementById('exitmessage').style.display = 'none';
+		app.exiting = false;
+	}, 
 	onExit: function() {
 		if(isPhoneGap){
 			log('Received exit Event');
