@@ -268,12 +268,12 @@ function handleSounds(target, other){
 	}	
 }
 
-function playDing(){
+function playStart(){
 	handleSounds(ding, dingDingDing);
 }
 
 
-function playDingDingDing(){
+function playEnd(){
 	handleSounds(dingDingDing, ding);
 }	
 
