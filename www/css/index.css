@@ -143,6 +143,7 @@ button {
 }
 
 .panel{
+	background-color:white;	
 	border-radius:25px;
 	margin:15px;
 	padding:5px;
