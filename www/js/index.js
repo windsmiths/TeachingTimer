@@ -30,7 +30,6 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
 		document.addEventListener('exit', this.onExit);
-		document.addEventListener('backbutton', this.onBackButton, false);
     },
     // deviceready Event Handler
 
@@ -39,6 +38,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
 		log('Received deviceready Event');
+		document.addEventListener('backbutton', app.onBackButton, false);
 		app.ready = true;
 		initialize();			
 	},
@@ -49,14 +49,14 @@ var app = {
 				navigator.app.exitApp();
 			}else{
 				app.exiting = true;
-				document.getElementById('exitmessage').style.display = 'block';
-				setTimeout(app.onBackButtonTimeout, 1000);
+				show('exitmessage');
+				setTimeout(app.onBackButtonTimeout, 5000);
 			};
 		}
 	},
 	onBackButtonTimeout: function() {
 		log('onBackButtonTimeout');
-		document.getElementById('exitmessage').style.display = 'none';
+		hide('exitmessage');
 		app.exiting = false;
 	}, 
 	onExit: function() {
@@ -67,6 +67,24 @@ var app = {
 	}		
 };
 
+function show(id) {
+	var e = document.getElementById(id)
+	e.classList.remove('hidemessage');
+	e.classList.add('showmessage');
+	e.style.display = 'block'; 
+}
+
+function hide(id) {
+	var e = document.getElementById(id)
+	e.classList.remove('showmessage');
+	e.classList.add('hidemessage');
+	e.addEventListener('transitionend', 
+		function() {
+			var e = event.target;
+			e.style.display = 'none';
+			e.removeEventListener('transitionend');
+			});
+}
 
 class Timer {
   // class methods
@@ -330,8 +348,8 @@ function initialize(){
 	// Do first tick...
 	onTick()
 	// We're now ready
-	document.getElementById('initialising').style.display = 'none';
-	document.getElementById('deviceready').style.display = 'block';
+	hide('initialising');
+	show('deviceready');
 	// then set to regular tick...
 	setInterval(onTick, storage.getInt('updateSeconds', 1)*1000);
 }
