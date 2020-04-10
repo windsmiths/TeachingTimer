@@ -48,34 +48,39 @@
     <script type="text/javascript" src="cordova.js"></script>
     <div class="app" >
         <h1>Mindfulness Teaching Timer</h1>
-        <div id="initialising" class="blink">
+        <div id="initialising" style="display:block;">
             <p>Initialising...</p>
 		</div>
-		<div id="deviceready" style="display:none">
-			<p>Current Time</p></a>
-			<p id="now" class="timer"></p>
-			<br>
-			<a href="javascript:lessonTimer.updateDuration();">
-			<p id="lessonText"></p></a>
-			<p id="lessonTimer" class="timer"></p>
-			<a href="javascript:lessonTimer.start();">Start</a>&nbsp
-			<a href="javascript:lessonTimer.stop();">Stop</a>&nbsp
-			<a href="javascript:lessonTimer.toggleCountDown();">Toggle</a>
-			<a href="javascript:intervalTimer.updateDuration();">
-			<br><br><br>
-			<p id="intervalText"></p></a>
-			<p id="intervalTimer" class="timer"></p>
-			<a href="javascript:intervalTimer.start();">Start</a>&nbsp
-			<a href="javascript:intervalTimer.stop();">Stop</a>&nbsp
-			<a href="javascript:intervalTimer.toggleCountDown();">Toggle</a>
-			<br><br><br>
-			<a href="javascript:playStart();">Play Start</a>&nbsp
-			<a href="javascript:playEnd();">Play End</a>		
+		<div id="deviceready" style="display:none;">
+			<div class="panel">
+				<p>Current Time</p>
+				<p id="now" class="timer"></p>
+			</div>		
+			<div class="panel">			
+				<a href="javascript:lessonTimer.updateDuration();">
+				<p id="lessonText"></p></a>
+				<p id="lessonTimer" class="timer"></p>
+				<a href="javascript:lessonTimer.start();">Start</a>&nbsp
+				<a href="javascript:lessonTimer.stop();">Stop</a>&nbsp
+				<a href="javascript:lessonTimer.toggleCountDown();">Toggle</a>
+			</div>
+			<div class="panel">
+				<a href="javascript:intervalTimer.updateDuration();">
+				<p id="intervalText"></p></a>
+				<p id="intervalTimer" class="timer"></p>
+				<a href="javascript:intervalTimer.start();">Start</a>&nbsp
+				<a href="javascript:intervalTimer.stop();">Stop</a>&nbsp
+				<a href="javascript:intervalTimer.toggleCountDown();">Toggle</a>
+			</div>				
+			<button type="button" onclick="javascript:playStart()">Play Start</button>
+			<button type="button" onclick="javascript:playEnd()">Play End</button>
 		</div>	
-		<div id="exitmessage" class="hideexitmessage" style="display:none">
+		<button type="button onclick="javascript:app.onBackButton()">Test</button>		
+		<div id="exitmessage" style="display:none;">
 			<p>Press again to exit...</p>
 		</div>	
     </div>
+
 
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
