@@ -59,6 +59,10 @@ h1 {
     text-align:center;
 }
 
+a{
+	text-decoration: none;
+}
+
 button {
 	outline: none;
 	border-radius: 15px;
@@ -138,4 +142,13 @@ button {
 	text-align:center;
 	padding:0;
 	margin:0; 
+}
+
+.test {
+	background-color:red;	
+	border-radius:25px;
+	heeight:50px;
+	width:50px;
+	margin:15px;
+	padding:5px;
 }
