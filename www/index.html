@@ -59,20 +59,18 @@
 				<p id="now" class="timer"></p>
 			</div>		
 			<div class="panel">			
+				<img id="lessonStartStop" class="control" onclick="javascript:lessonTimer.toggleStartStop()" align="left">			
 				<a href="javascript:lessonTimer.updateDuration();">
-				<p id="lessonText"></p></a>
-				<p id="lessonTimer" class="timer"></p>
-				<a href="javascript:lessonTimer.start();">Start</a>&nbsp
-				<a href="javascript:lessonTimer.stop();">Stop</a>&nbsp
-				<a href="javascript:lessonTimer.toggleCountDown();">Toggle</a>
+				<span id="lessonText"></span></a>
+				<img id="lessonUpDown" class="control" onclick="javascript:lessonTimer.toggleCountDown()" align="right">					
+				<p id="lessonTimer" class="timer"></p>				
 			</div>
 			<div class="panel">
+				<img id="intervalStartStop" class="control" onclick="javascript:intervalTimer.toggleStartStop()" align="left">
 				<a href="javascript:intervalTimer.updateDuration();">
-				<p id="intervalText"></p></a>
+				<span id="intervalText"></span></a>
+				<img id="intervalUpDown" class="control" onclick="javascript:intervalTimer.toggleCountDown()" align="right">				
 				<p id="intervalTimer" class="timer"></p>
-				<a href="javascript:intervalTimer.start();">Start</a>&nbsp
-				<a href="javascript:intervalTimer.stop();">Stop</a>&nbsp
-				<a href="javascript:intervalTimer.toggleCountDown();">Toggle</a>
 			</div>	
 			<p>			
 				<button type="button" onclick="javascript:playStart()">Play Start</button>
