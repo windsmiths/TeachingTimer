@@ -47,8 +47,10 @@
 	<script type="text/javascript">var isPhoneGap = true;</script>
     <script type="text/javascript" src="cordova.js"></script>
     <div class="app" >
-        <h1>Mindfulness Teaching Timer</h1>
-        <div id="initialising" style="display:block;">
+        <div class="panel">
+			<h1>Mindfulness Teaching Timer</h1>
+		</div>
+        <div id="initialising">
             <p>Initialising...</p>
 		</div>
 		<div id="deviceready" style="display:none;">
@@ -71,14 +73,16 @@
 				<a href="javascript:intervalTimer.start();">Start</a>&nbsp
 				<a href="javascript:intervalTimer.stop();">Stop</a>&nbsp
 				<a href="javascript:intervalTimer.toggleCountDown();">Toggle</a>
-			</div>				
-			<button type="button" onclick="javascript:playStart()">Play Start</button>
-			<button type="button" onclick="javascript:playEnd()">Play End</button>
-		</div>	
-		<button type="button onclick="javascript:app.onBackButton()">Test</button>		
-		<div id="exitmessage" style="display:none;">
+			</div>	
+			<p>			
+				<button type="button" onclick="javascript:playStart()">Play Start</button>
+				<button type="button" onclick="javascript:playEnd()">Play End</button>
+			</p>	
+		</div>		
+		<div id="exitmessage" class="messagebox" style="display:none;">
 			<p>Press again to exit...</p>
 		</div>	
+		<button type="button" onclick="javascript:app.onBackButton()" style="display:none;">Test</button>	
     </div>
 
 

@@ -43,25 +43,25 @@ var app = {
 		initialize();			
 	},
 	onBackButton: function() {
-		if(isPhoneGap){
-			log('Received backbutton Event');
-			if(app.exiting){
+		log('Received backbutton Event');
+		if(app.exiting){
+			log('Exiting!');
+			if(isPhoneGap){
 				navigator.app.exitApp();
-			}else{
-				app.exiting = true;
-				show('exitmessage');
-				setTimeout(app.onBackButtonTimeout, 5000);
-			};
-		}
+			}
+		}else{
+			app.exiting = true;
+			popup('exitmessage');
+			setTimeout(app.onBackButtonTimeout, 3000);
+		};
 	},
 	onBackButtonTimeout: function() {
 		log('onBackButtonTimeout');
-		hide('exitmessage');
 		app.exiting = false;
 	}, 
 	onExit: function() {
+		log('Received exit Event');
 		if(isPhoneGap){
-			log('Received exit Event');
 			window.plugins.insomnia.allowSleepAgain();
 		}
 	}		
@@ -69,22 +69,23 @@ var app = {
 
 function show(id) {
 	var e = document.getElementById(id)
-	e.classList.remove('hidemessage');
-	e.classList.add('showmessage');
-	e.style.display = 'block'; 
+	e.style.display = 'block';
 }
 
 function hide(id) {
 	var e = document.getElementById(id)
-	e.classList.remove('showmessage');
-	e.classList.add('hidemessage');
-	e.addEventListener('transitionend', 
-		function() {
-			var e = event.target;
-			e.style.display = 'none';
-			e.removeEventListener('transitionend');
-			});
+	e.style.display = 'none';
 }
+
+function popup(id) {
+	var e = document.getElementById(id)
+	e.classList.remove('popup');
+	e.style.display = 'block';
+	void e.offsetWidth;
+	e.classList.add('popup');
+}
+
+
 
 class Timer {
   // class methods
