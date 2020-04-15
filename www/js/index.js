@@ -69,7 +69,7 @@ var app = {
 
 function show(id) {
 	var e = document.getElementById(id)
-	e.style.display = 'block';
+	e.style.display = 'inline';
 }
 
 function hide(id) {
