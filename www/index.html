@@ -47,38 +47,47 @@
 	<script type="text/javascript">var isPhoneGap = true;</script>
     <script type="text/javascript" src="cordova.js"></script>
     <div class="app" >
-        <h1>Mindfulness Teaching Timer</h1>
-        <div id="initialising" style="display:block;">
+		<div class="row">
+			<div class="panel col-12">
+				<h1>Mindfulness Teaching Timer</h1>
+			</div>
+		</div>
+        <div id="initialising" class="row">
             <p>Initialising...</p>
 		</div>
 		<div id="deviceready" style="display:none;">
-			<div class="panel">
-				<p>Current Time</p>
-				<p id="now" class="timer"></p>
-			</div>		
-			<div class="panel">			
-				<a href="javascript:lessonTimer.updateDuration();">
-				<p id="lessonText"></p></a>
-				<p id="lessonTimer" class="timer"></p>
-				<a href="javascript:lessonTimer.start();">Start</a>&nbsp
-				<a href="javascript:lessonTimer.stop();">Stop</a>&nbsp
-				<a href="javascript:lessonTimer.toggleCountDown();">Toggle</a>
+			<div class="row">
+				<div class="row">
+				<span class="panel col-6">
+					<p>Current Time</p>
+					<p id="now" class="timer"></p>
+				</span>
+				<span class="panel col-6">			
+					<img id="lessonStartStop" class="control" onclick="javascript:lessonTimer.toggleStartStop()" align="left">			
+					<a href="javascript:lessonTimer.updateDuration();">
+					<span id="lessonText"></span></a>
+					<img id="lessonUpDown" class="control" onclick="javascript:lessonTimer.toggleCountDown()" align="right">					
+					<p id="lessonTimer" class="timer"></p>				
+				</span>
 			</div>
-			<div class="panel">
-				<a href="javascript:intervalTimer.updateDuration();">
-				<p id="intervalText"></p></a>
-				<p id="intervalTimer" class="timer"></p>
-				<a href="javascript:intervalTimer.start();">Start</a>&nbsp
-				<a href="javascript:intervalTimer.stop();">Stop</a>&nbsp
-				<a href="javascript:intervalTimer.toggleCountDown();">Toggle</a>
-			</div>				
-			<button type="button" onclick="javascript:playStart()">Play Start</button>
-			<button type="button" onclick="javascript:playEnd()">Play End</button>
-		</div>	
-		<button type="button onclick="javascript:app.onBackButton()">Test</button>		
-		<div id="exitmessage" style="display:none;">
+			<div class="row">			
+				<div class="panel col-6">
+					<img id="intervalStartStop" class="control" onclick="javascript:intervalTimer.toggleStartStop()" align="left">
+					<a href="javascript:intervalTimer.updateDuration();">
+					<span id="intervalText"></span></a>
+					<img id="intervalUpDown" class="control" onclick="javascript:intervalTimer.toggleCountDown()" align="right">				
+					<p id="intervalTimer" class="timer"></p>
+				</div>	
+				<p class="col-6">			
+					<button type="button" onclick="javascript:playStart()">Play Start</button>
+					<button type="button" onclick="javascript:playEnd()">Play End</button>
+				</p>
+			</div>
+		</div>		
+		<div id="exitmessage" class="messagebox" style="display:none;">
 			<p>Press again to exit...</p>
 		</div>	
+		<button type="button" class="test" onclick="javascript:app.onBackButton()" style="display:none;">Test</button>	
     </div>
 
 

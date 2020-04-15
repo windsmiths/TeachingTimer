@@ -43,25 +43,25 @@ var app = {
 		initialize();			
 	},
 	onBackButton: function() {
-		if(isPhoneGap){
-			log('Received backbutton Event');
-			if(app.exiting){
+		log('Received backbutton Event');
+		if(app.exiting){
+			log('Exiting!');
+			if(isPhoneGap){
 				navigator.app.exitApp();
-			}else{
-				app.exiting = true;
-				show('exitmessage');
-				setTimeout(app.onBackButtonTimeout, 5000);
-			};
-		}
+			}
+		}else{
+			app.exiting = true;
+			popup('exitmessage');
+			setTimeout(app.onBackButtonTimeout, 3000);
+		};
 	},
 	onBackButtonTimeout: function() {
 		log('onBackButtonTimeout');
-		hide('exitmessage');
 		app.exiting = false;
 	}, 
 	onExit: function() {
+		log('Received exit Event');
 		if(isPhoneGap){
-			log('Received exit Event');
 			window.plugins.insomnia.allowSleepAgain();
 		}
 	}		
@@ -69,31 +69,32 @@ var app = {
 
 function show(id) {
 	var e = document.getElementById(id)
-	e.classList.remove('hidemessage');
-	e.classList.add('showmessage');
-	e.style.display = 'block'; 
+	e.style.display = 'inline';
 }
 
 function hide(id) {
 	var e = document.getElementById(id)
-	e.classList.remove('showmessage');
-	e.classList.add('hidemessage');
-	e.addEventListener('transitionend', 
-		function() {
-			var e = event.target;
-			e.style.display = 'none';
-			e.removeEventListener('transitionend');
-			});
+	e.style.display = 'none';
 }
+
+function popup(id) {
+	var e = document.getElementById(id)
+	e.classList.remove('popup');
+	e.style.display = 'block';
+	void e.offsetWidth;
+	e.classList.add('popup');
+}
+
+
 
 class Timer {
   // class methods
-  constructor(seconds) {
+  constructor(seconds, showAsCountDown) {
 	  this.isRunning = false;
 	  this.startDate = null;
 	  this.durationSeconds = seconds;
 	  this.endDate = null;
-	  this.showAsCountDown = false;
+	  this.showAsCountDown = showAsCountDown;
   }
   
   secondsToHHMMSS(seconds){
@@ -113,9 +114,9 @@ class Timer {
   }
   
   toggleCountDown(){
-	  this.showAsCountDown = ~this.showAsCountDown;
+	  this.showAsCountDown = !this.showAsCountDown;
   }
-  
+   
   updateDuration(seconds){
 	  var delta = seconds - this.durationSeconds;
 	  this.durationSeconds = seconds;
@@ -178,17 +179,32 @@ class Timer {
 }
 
 class TimerWidget{
-	  constructor(name, timerID, headerID, defaultSeconds) {
+	  constructor(name, timerID, defaultSeconds) {
 		this.name = name;
-		this.headerID = headerID;
-		this.timerID = timerID;		
-		this.secondsKey = timerID + '.seconds';
-		this.timer = new Timer(storage.getInt(this.secondsKey, defaultSeconds));
+		this.headerID = timerID + 'Text';	
+		this.timerID = timerID + 'Timer';		
+		this.startStopID = timerID + 'StartStop';
+		this.upDownID = timerID + 'UpDown';
+		this.secondsKey = this.timerID + '.seconds';
+		this.showAsCountDownKey = this.timerID + '.showAsCountDown';
+		this.timer = new Timer(storage.getInt(this.secondsKey, defaultSeconds),
+							   storage.getBoolean(this.showAsCountDownKey, false));
 		this.setHeader();
+		this.setUpDownImage()
+		this.stop();
   }
   
   setHeader(){
 	  document.getElementById(this.headerID).innerHTML = this.name+' Timer ('+(this.timer.durationSeconds/60).toString()+' mins)';
+  }
+  
+  setUpDownImage(){
+	  var upDownImage = document.getElementById(this.upDownID);
+	  if(this.timer.showAsCountDown){
+		upDownImage.src = 'img/down-icon.png';
+	  } else {
+		upDownImage.src = 'img/up-icon.png';
+	  }
   }
   
   updateTimer(){
@@ -198,13 +214,23 @@ class TimerWidget{
   
   start(){
 	  this.timer.start();
+	  document.getElementById(this.startStopID).src = 'img/Stop-icon.png';
 	  this.updateTimer();
   }
   
   stop(){
 	  this.timer.stop();
+	  document.getElementById(this.startStopID).src = 'img/Start-icon.png';
 	  this.updateTimer();
   }
+  
+  toggleStartStop(){
+	  if(this.timer.isRunning){
+		  this.stop();
+	  } else {
+		  this.start();
+	  }
+  }  
     
   updateDuration(){
 	var minutes = parseInt(window.prompt("Enter "+self.name+" minutes:"));
@@ -219,6 +245,8 @@ class TimerWidget{
   
   toggleCountDown(){
 	this.timer.toggleCountDown();
+	this.setUpDownImage();
+	storage.setBoolean(this.showAsCountDownKey, this.timer.showAsCountDown);
 	this.updateTimer();
   }
 }
@@ -252,11 +280,19 @@ class Storage{
 		return(value)
 	}
 	
+	getBoolean(key, defaultValue) {
+		return (this.getString(key, defaultValue) === 'true');
+	}	
+	
 	setString(key, value) {
 		this.storage.setItem(key, value);
 	}
 	
 	setNumber(key, value) {
+		this.storage.setItem(key, value.toString());
+	}
+	
+	setBoolean(key, value) {
 		this.storage.setItem(key, value.toString());
 	}
 	
@@ -335,8 +371,8 @@ function initialize(){
 	}
 	log('isPhoneGap: ' + isPhoneGap);
 	storage = new Storage();
-	lessonTimer = new TimerWidget('Lesson', 'lessonTimer', 'lessonText', 3600);
-	intervalTimer = new TimerWidget('Interval', 'intervalTimer', 'intervalText', 600);
+	lessonTimer = new TimerWidget('Lesson', 'lesson', 3600);
+	intervalTimer = new TimerWidget('Interval', 'interval', 600);
 	if (isPhoneGap) {
 		window.plugins.insomnia.keepAwake();
 		ding = new Media(getURL('audio/Ding.m4a'), mediaFound, mediaNotFound);

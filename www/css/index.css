@@ -18,31 +18,33 @@
  */
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+	box-sizing: border-box;
 }
 
 body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#5a5b5c;
-    background-image:linear-gradient(top, #A7A7A7 0%, #5a5b5c 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #5a5b5c 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #5a5b5c 51%);
+    background-color:#98a1f5;
+    background-image:linear-gradient(top, #1328eb 0%, #98a1f5 51%);
+    background-image:-webkit-linear-gradient(top, #1328eb 0%, #98a1f5 51%);
+    background-image:-ms-linear-gradient(top, #1328eb 0%, #98a1f5 51%);
     background-image:-webkit-gradient(
         linear,
         left top,
         left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #5a5b5c)
+        color-stop(0, #1328eb),
+        color-stop(0.51, #98a1f5)
     );
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:4vw;
+    font-size:14px;
     height:100%;
     margin:0;
-    padding:0;
+    padding:15px;
     text-transform:uppercase;
     width:100%;
+	text-align:center;
 }
 
 p{
@@ -51,7 +53,7 @@ p{
 }
 
 h1 {
-    font-size:8vw;
+    font-size:18px;
     font-weight:normal;
     margin:0;
     overflow:visible;
@@ -59,26 +61,22 @@ h1 {
     text-align:center;
 }
 
+a{
+	text-decoration: none;
+}
+
 button {
 	outline: none;
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:4vw;	
-	border-radius: 15px;
-	background: #73AD21;
-	padding: 1vw;
-	width: 150px;
+	border-radius: 25px;
+	background: #dcdcde;
+	padding: 5px;
+	width: 45%;
 	height: 50px;
+	text-transform:uppercase;
 }
 
 /* Portrait layout (default) */
 .app {
-    /* background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
-    position:absolute;             /* position in the center of the screen */
-    top:5%;
-    text-align:center;
-    padding:0 0 0 0;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:0 0 0 0;  /* offset vertical: half of image height and text area height */
-                                   /* offset horizontal: half of text area width */
 }
 
 /* For desktop: */
@@ -95,62 +93,78 @@ button {
 .col-11 {width: 91.66%;}
 .col-12 {width: 100%;}
 
-@media only screen and (max-width: 768px) {
+[class*="col-"] {
+  float: left;
+  padding: 15px;
+  margin: 0 0 15px 0;
+}
+
+[class*="col-"]::after {
+	  display: table;
+}
+
+@media only screen and (min-height: 480px) {
   /* For mobile phones: */
   [class*="col-"] {
     width: 100%;
   }
 }
 
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
 
-@keyframes fadein {
-    from { opacity: 0.0; }
-    50% { opacity: 0.6; }
-    to { opacity: 1.0; }
-}
- 
-@-webkit-keyframes fadein {
-    from { opacity: 0.0; }
-    50% { opacity: 0.6; }
-    to { opacity: 1.0; }
-}
 
 @keyframes popup {
-    from { opacity: 0.0; }
-    10% { opacity: 1.0; }
-	90% { opacity: 1.0; }
-    to { opacity: 0.0; }
+    from { opacity: 0.0; display: inline;}
+    30% { opacity: 1.0; }
+	70% { opacity: 1.0; }
+    to { opacity: 0.0; display: none;}
 }
 
-.hidemessage{
-	opacity: 0;
-	animation:fadein 3000ms reverse;
-    -webkit-animation:fadein 3000ms reverse;
+.popup{
+	animation: popup 3000ms both;
+	-webkit-animation: popup 3000ms both;	
 }
 
-.showmessage{
-	opacity: 1;
-	animation:fadein 3000ms;
-    -webkit-animation:fadein 3000ms;
+.messagebox{
+	display: none;
+	position: absolute;
+	top: 75%;
+	left: 50%;
+	transform: translateX(-50%);
+	color: white;
+	background-color: grey;	
+	border-radius: 15px;
+	padding: 15px;
 }
 
-.popupmessage{
-}
-
-.blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
-}
 
 .panel{
 	background-color:white;	
 	border-radius:25px;
-	margin:15px;
-	padding:5px;
+	border: 1px solid black;
+	padding:5px 25px 5px 25px;
 }
 .timer {
-	font-size:20vw;
+	font-size:72px;
 	text-align:center;
 	padding:0;
 	margin:0; 
+}
+
+.test {
+	background-color:red;	
+	border-radius:25px;
+	height:50px;
+	width:50px;
+	padding:5px;
+}
+
+.control{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
 }
