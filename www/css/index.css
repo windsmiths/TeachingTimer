@@ -54,7 +54,7 @@ p{
 
 h1 {
     font-size:18px;
-    font-weight:normal;
+    font-weight:bold;
     margin:0;
     overflow:visible;
     padding:0;
@@ -124,12 +124,49 @@ button {
     to { opacity: 0.0; display: none;}
 }
 
+@keyframes fade {
+    from { opacity: 0.0; display: none;}
+    to { opacity: 1.0; display: inline;}
+}
+
+.fadein{
+	animation: fade 1000ms both;
+	-webkit-animation: fade 1000ms both;	
+}
+
+.fadeout{
+	animation: fade 1000ms both reverse;
+	-webkit-animation: fade 1000ms both reverse;	
+}
+
 .popup{
 	animation: popup 3000ms both;
 	-webkit-animation: popup 3000ms both;	
 }
 
-.messagebox{
+.message{
+	display: none;
+	position: absolute;
+	top: 20%;
+	left: 50%;
+	transform: translateX(-50%);	
+	width: 80%;
+    background-color: white;
+    color: black;
+	border-radius: 15px;
+	padding: 15px;
+	border: 1px solid black;
+	text-transform:none;
+}
+
+.closebtn {
+    background-color: #dcdcde;
+    color: black;
+	border-radius: 15px;
+	padding: 15px;	
+}
+
+.popupMessage{
 	display: none;
 	position: absolute;
 	top: 75%;
