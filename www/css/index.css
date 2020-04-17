@@ -118,15 +118,15 @@ button {
 
 
 @keyframes popup {
-    from { opacity: 0.0; display: inline;}
+    from { opacity: 0.0;  z-index: 100;}
     30% { opacity: 1.0; }
 	70% { opacity: 1.0; }
-    to { opacity: 0.0; display: none;}
+    to { opacity: 0.0; z-index: -1;}
 }
 
 @keyframes fade {
-    from { opacity: 0.0; display: none;}
-    to { opacity: 1.0; display: inline;}
+    from { opacity: 0.0; z-index: -1;}
+    to { opacity: 1.0; z-index: 100;}
 }
 
 .fadein{
