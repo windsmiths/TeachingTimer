@@ -83,8 +83,12 @@
 					<button type="button" onclick="javascript:playEnd()">Play End</button>
 				</p>
 			</div>
-		</div>		
-		<div id="exitmessage" class="messagebox" style="display:none;">
+		</div>	
+		<div id="messageBox" class="message" style="display:none;">
+			<span id="messageBoxMessage"></span><br>
+			<span class="closebtn" onclick="javascript:fadeout('messageBox')">OK</span><br><br> 			
+		</div>			
+		<div id="exitmessage" class="popupMessage" style="display:none;">
 			<p>Press again to exit...</p>
 		</div>	
 		<button type="button" class="test" onclick="javascript:app.onBackButton()" style="display:none;">Test</button>	

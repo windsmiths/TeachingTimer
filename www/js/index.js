@@ -85,6 +85,21 @@ function popup(id) {
 	e.classList.add('popup');
 }
 
+function fadein(id) {
+	var e = document.getElementById(id)
+	e.classList.remove('fadeout');
+	e.style.display = 'block';
+	void e.offsetWidth;
+	e.classList.add('fadein');
+}
+
+function fadeout(id) {
+	var e = document.getElementById(id)
+	e.classList.remove('fadein');
+	void e.offsetWidth;
+	e.classList.add('fadeout');
+}
+
 
 
 class Timer {
@@ -384,8 +399,16 @@ function initialize(){
 	// Do first tick...
 	onTick()
 	// We're now ready
-	hide('initialising');
-	show('deviceready');
+	fadeout('initialising');
+	fadein('deviceready');
+	var message = '<h1>Welcome to the Mindfulness Teaching Timer App...</h1>';
+	message += '<ul style="text-align:left;">';
+	message += '<li>Check your device is on <b>Silent/Do Not Disturb</b>!</li>';
+	message += '<li>While in the foreground, this App will keep your screen on.</li>';
+	message += '<li>You can toggle timers between Up/Down and change their lengths while they are running.</li>';
+	message += '</ul>';
+	document.getElementById('messageBoxMessage').innerHTML = message;
+	fadein('messageBox');
 	// then set to regular tick...
 	setInterval(onTick, storage.getInt('updateSeconds', 1)*1000);
 }
