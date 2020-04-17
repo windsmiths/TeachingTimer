@@ -401,9 +401,9 @@ function initialize(){
 	// We're now ready
 	fadeout('initialising');
 	fadein('deviceready');
-	var message = '<h1>Mindfulness Teaching Timer</h1>';
+	var message = '<h1>Welcome to the Mindfulness Teaching Timer App...</h1>';
 	message += '<ul style="text-align:left;">';
-	message += '<li>Check your device is on Silent/Do Not Disturb!</li>';
+	message += '<li>Check your device is on <b>Silent/Do Not Disturb</b>!</li>';
 	message += '<li>While in the foreground, this App will keep your screen on.</li>';
 	message += '<li>You can toggle timers between Up/Down and change their lengths while they are running.</li>';
 	message += '</ul>';
