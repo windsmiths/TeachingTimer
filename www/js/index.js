@@ -404,7 +404,11 @@ function initialize(){
 	var message = '<h1>Welcome to the Mindfulness Teaching Timer App...</h1>';
 	message += '<ul style="text-align:left;">';
 	message += '<li>Check your device is on <b>Silent/Do Not Disturb</b>!</li>';
-	message += '<li>While in the foreground, this App will keep your screen on.</li>';
+	if (isPhoneGap) {
+		message += '<li>While in the foreground, this App will keep your screen on.</li>';
+	} else {
+		message += '<li>Also set your screen timeout...</li>';
+	}
 	message += '<li>You can toggle timers between Up/Down and change their lengths while they are running.</li>';
 	message += '</ul>';
 	document.getElementById('messageBoxMessage').innerHTML = message;
