@@ -316,6 +316,111 @@ class Storage{
 	}
 }
 
+class AudioHandler{
+	constructor() {
+		if(isPhoneGap)
+			this.player = null;
+		else
+			this.player = new Audio();
+		this.url = '';
+		this.onEnd = null;
+		// Bind the event functions to this instance so we can use them in events
+		this.mediaFound = this.mediaFound.bind(this);	
+		this.mediaNotFound = this.mediaNotFound.bind(this);
+		this.mediaStatus = this.mediaStatus.bind(this);
+	}
+	
+	mediaFound(e){
+	}
+
+	mediaNotFound(e){
+		log('Media Error: ' + JSON.stringify(e));
+	}
+
+	mediaStatus(e){
+		if (e == Media.MEDIA_STOPPED)
+			if (this.onEnd)
+				this.onEnd();
+	}	
+	
+	setURL(url){
+		if (url!=this.url){
+			this.url = url;
+			if(isPhoneGap){
+				if (this.player)
+					this.player.release();
+				this.player = new Media(getURL(url), this.mediaFound, this.mediaNotFound, this.mediaStatus);
+			}
+			else
+			{
+				this.player.src = url;	
+			}
+		}			
+	}
+	
+	
+	play(onEnd){
+		this.player.play();
+		if (this.onEnd)
+			this.onEnd();
+		this.onEnd = onEnd;
+		if(isPhoneGap){}
+		else
+		    this.player.onended = onEnd;		
+	}
+	
+	stop(){
+		if (this.onEnd)
+			this.onEnd();
+		this.onEnd = null;
+		if(isPhoneGap){
+			if (this.player)
+				this.player.stop()
+		} else {
+			this.player.load();
+		}
+	}
+}
+
+class AudioButtonHandler{
+	constructor(audioButton, label, audioURL) {
+		this.audioButton = audioButton;
+		this.audioURL = audioURL;
+		this.label = label;
+		this.isPlaying = false;
+		this.renderButton();
+		// Bind the onEnding function to this instance so we can use it in events
+		this.onEnding = this.onEnding.bind(this);
+	}
+	
+	renderButton(){
+		if (this.isPlaying)
+			var icon = 'Stop';
+		else
+			var icon = 'Start';
+		var html = '<img class="control" src="img/' + icon + '-icon.png">&nbsp;' + this.label;
+		this.audioButton.innerHTML = html;		
+	}
+	
+	onEnding(){
+		this.isPlaying = false;
+		this.renderButton();
+	}
+	
+	buttonPress() {
+		if (this.isPlaying) {
+			// stop - events handlers will sort everything else out...
+			audioHandler.stop();
+		} else {
+			// stop any currently playing sound...
+			audioHandler.stop();
+			audioHandler.setURL(this.audioURL);
+			audioHandler.play(this.onEnding)
+			this.isPlaying = true;
+			this.renderButton();
+		}
+	}
+}
 
 function onTick(){
 	var d = new Date();
@@ -332,46 +437,6 @@ function log(s){
 	console.log(prefix + s);
 }
 
-function handleSounds(target, other){
-	
-	if(isPhoneGap){
-		target.getCurrentPosition(function(p){}, function(p){});
-		other.getCurrentPosition(function(p){}, function(p){});
-		if(other._position != 0) {
-			other.stop();
-		}
-		var position = target._position;
-	} else {
-		other.load();
-		var position = target.currentTime;
-	}
-	log('Media Position: ' + position);
-	if(position==0){
-		target.play();
-	} else {
-		if(isPhoneGap){
-			target.stop()
-		} else {
-			target.load();
-		}
-	}	
-}
-
-function playStart(){
-	handleSounds(ding, dingDingDing);
-}
-
-
-function playEnd(){
-	handleSounds(dingDingDing, ding);
-}	
-
-function mediaFound(e){
-}
-
-function mediaNotFound(e){
-	log('Media Error: ' + JSON.stringify(e));
-}
 
 function getURL(s) {
 	root = window.location.pathname;
@@ -388,14 +453,9 @@ function initialize(){
 	storage = new Storage();
 	lessonTimer = new TimerWidget('Lesson', 'lesson', 3600);
 	intervalTimer = new TimerWidget('Interval', 'interval', 600);
-	if (isPhoneGap) {
+	audioHandler = new AudioHandler();
+	if (isPhoneGap) 
 		window.plugins.insomnia.keepAwake();
-		ding = new Media(getURL('audio/Ding.m4a'), mediaFound, mediaNotFound);
-		dingDingDing = new Media(getURL('audio/Ding ding ding.m4a'), mediaFound, mediaNotFound);
-	} else {
-		ding = new Audio('audio/Ding.m4a');
-		dingDingDing = new Audio('audio/Ding ding ding.m4a');	
-	}
 	// Do first tick...
 	onTick()
 	// We're now ready
@@ -421,9 +481,8 @@ function initialize(){
 var storage = null;
 var lessonTimer = null;
 var intervalTimer = null;
-var ding = null;
-var dingDingDing = null;
-
-
+var audioHandler = null;
+var buttonStartBell = new AudioButtonHandler(document.getElementById("buttonStartBell"), 'Start Bell', 'audio/Ding.m4a');
+var buttonEndBell = new AudioButtonHandler(document.getElementById("buttonEndBell"), 'End Bell', 'audio/Ding ding ding.m4a');
 
 
