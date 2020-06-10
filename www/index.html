@@ -23,6 +23,8 @@
 
 <head>
     <meta charset="utf-8" />
+	<meta name="description" content="Mindfulness Teaching Timer">
+	<meta name="theme-color" content="#3367D6"/>
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
@@ -40,6 +42,11 @@
 
     <link rel="stylesheet" type="text/css" href="css/index.css" />
 	<link rel="icon" href="favicon.png" type="image/png" sizes="16x16">
+	<link rel="manifest" href="/manifest.webmanifest">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="Mindfulness Teaching Timer">	
+	<link rel="apple-touch-icon" href="/res/icon/android/xxxhdpi.png">
     <title>Mindfulness Teaching Timer</title>
 </head>
 
@@ -90,7 +97,8 @@
 		</div>			
 		<div id="exitmessage" class="popupMessage" style="display:none;">
 			<p>Press again to exit...</p>
-		</div>	
+		</div>
+		<div id="buttonInstall" style="align:right" hidden>Install as App</div>
 		<!-- Test/Debug items here (edit to make visible when required)... -->
 		<button type="button" class="test" onclick="javascript:app.onBackButton()" style="display:none;">Test</button>	
 		<!-- Test/Debug items End. -->
@@ -98,10 +106,19 @@
 
 
     <script type="text/javascript" src="js/index.js"></script>
+	<script src="js/install.js"></script>	
     <script type="text/javascript">
 	if (!isPhoneGap){
 		document.getElementById("initialising").style.display = "none"
 		initialize();
+		if ('serviceWorker' in navigator) {
+		  window.addEventListener('load', () => {
+			navigator.serviceWorker.register('/service-worker.js')
+				.then((reg) => {
+				  console.log('Service worker registered.', reg);
+				});
+		  });
+		}		
 	} else {
 		app.initialize();
 	}

@@ -467,8 +467,11 @@ function initialize(){
 	if (isPhoneGap) {
 		message += '<li>While in the foreground, this App will keep your screen on.</li>';
 	} else {
-		message += '<li>Also set your screen timeout...</li>';
+		message += '<li>Also set your <b>screen timeout</b>...</li>';
+		if (!installButton.hidden)
+			message += '<li>You can install this page as an App using link below...</li>';
 	}
+	message += '<li>This page only makes sounds if you press the Bell buttons.</li>';
 	message += '<li>You can toggle timers between Up/Down and change their lengths while they are running.</li>';
 	message += '</ul>';
 	document.getElementById('messageBoxMessage').innerHTML = message;
