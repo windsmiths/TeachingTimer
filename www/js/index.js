@@ -324,6 +324,7 @@ class AudioHandler{
 			this.player = new Audio();
 		this.url = '';
 		this.onEnd = null;
+		this.enableOnEnd = false;
 		// Bind the event functions to this instance so we can use them in events
 		this.mediaFound = this.mediaFound.bind(this);	
 		this.mediaNotFound = this.mediaNotFound.bind(this);
@@ -331,51 +332,61 @@ class AudioHandler{
 	}
 	
 	mediaFound(e){
+		log(`${this.url} Success.`);
 	}
 
 	mediaNotFound(e){
-		log('Media Error: ' + JSON.stringify(e));
+		log(`${this.url} Media Error: ${e}.`);
 	}
 
 	mediaStatus(e){
-		if (e == Media.MEDIA_STOPPED)
-			if (this.onEnd)
+		log(`${this.url} Status = ${e}.`);
+		if (e == Media.MEDIA_STARTING)
+			this.enableOnEnd = true;
+		if (e == Media.MEDIA_STOPPED & this.enableOnEnd)
+			if (this.onEnd){
 				this.onEnd();
+				this.onEnd = null;
+			}
 	}	
 	
 	setURL(url){
 		if (url!=this.url){
-			this.url = url;
 			if(isPhoneGap){
-				if (this.player)
+				if (this.player){
+					this.player.stop();
 					this.player.release();
+				}
+				this.enableOnEnd = false;
 				this.player = new Media(getURL(url), this.mediaFound, this.mediaNotFound, this.mediaStatus);
 			}
 			else
 			{
 				this.player.src = url;	
 			}
+			this.url = url;
 		}			
 	}
 	
 	
-	play(onEnd){
+	play(onEnd){	
+		if(isPhoneGap){
+			if (this.onEnd){
+				this.onEnd();
+			}				
+			this.onEnd = onEnd;
+		} else {
+			this.player.onended = onEnd;		
+		}
 		this.player.play();
-		if (this.onEnd)
-			this.onEnd();
-		this.onEnd = onEnd;
-		if(isPhoneGap){}
-		else
-		    this.player.onended = onEnd;		
 	}
 	
 	stop(){
-		if (this.onEnd)
-			this.onEnd();
-		this.onEnd = null;
 		if(isPhoneGap){
-			if (this.player)
-				this.player.stop()
+			if (this.player){
+				this.player.stop();
+				this.player.release();
+			}
 		} else {
 			this.player.load();
 		}
@@ -398,26 +409,28 @@ class AudioButtonHandler{
 			var icon = 'Stop';
 		else
 			var icon = 'Start';
-		var html = '<img class="control" src="img/' + icon + '-icon.png">&nbsp;' + this.label;
+		var html = `<img class="control" src="img/${icon}-icon.png">&nbsp;${this.label}`;
 		this.audioButton.innerHTML = html;		
 	}
 	
 	onEnding(){
+		log(`${this.label} Ended.  IsPlaying was ${this.isPlaying}`);
 		this.isPlaying = false;
 		this.renderButton();
 	}
 	
 	buttonPress() {
+		log(`${this.label} pressed.  IsPlaying = ${this.isPlaying}`);
 		if (this.isPlaying) {
 			// stop - events handlers will sort everything else out...
 			audioHandler.stop();
 		} else {
-			// stop any currently playing sound...
+			// stop any currently playing sound...	
 			audioHandler.stop();
 			audioHandler.setURL(this.audioURL);
-			audioHandler.play(this.onEnding)
+			audioHandler.play(this.onEnding);
 			this.isPlaying = true;
-			this.renderButton();
+			this.renderButton();				
 		}
 	}
 }
@@ -430,11 +443,13 @@ function onTick(){
 }
 
 function log(s){
+	var d = new Date();
+	document.getElementById("now").innerHTML = d.toLocaleTimeString('en-GB');	
 	prefix = '';
 	if (typeof device !== 'undefined'){
 		prefix = device.platform + ':';
 	}
-	console.log(prefix + s);
+	console.log(`${prefix} ${d.toLocaleTimeString('en-GB')} ${s}`);
 }
 
 
