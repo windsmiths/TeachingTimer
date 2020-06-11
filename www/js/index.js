@@ -344,14 +344,20 @@ class AudioHandler{
 		if (e == Media.MEDIA_STARTING)
 			this.enableOnEnd = true;
 		if (e == Media.MEDIA_STOPPED & this.enableOnEnd)
-			if (this.onEnd){
-				this.onEnd();
-				this.onEnd = null;
-			}
+			this.doOnEnd();
+
 	}	
+	
+	doOnEnd(){
+		if (this.onEnd){
+			this.onEnd();
+			this.onEnd = null;
+		}		
+	}
 	
 	setURL(url){
 		if (url!=this.url){
+			this.doOnEnd();			
 			if(isPhoneGap){
 				if (this.player){
 					this.player.stop();
@@ -370,18 +376,16 @@ class AudioHandler{
 	
 	
 	play(onEnd){	
-		if(isPhoneGap){
-			if (this.onEnd){
-				this.onEnd();
-			}				
-			this.onEnd = onEnd;
-		} else {
+		this.doOnEnd();		
+		this.onEnd = onEnd;
+		if(!isPhoneGap){		
 			this.player.onended = onEnd;		
 		}
 		this.player.play();
 	}
 	
 	stop(){
+		this.doOnEnd();		
 		if(isPhoneGap){
 			if (this.player){
 				this.player.stop();
