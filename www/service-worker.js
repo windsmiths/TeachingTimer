@@ -11,9 +11,25 @@
  limitations under the License.
  */
 
-// Define version and PRECACHE_URLS in main page
 // Change version to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
+const version = 'v1.002';
+// A list of local resources we always want to be cached.
+const PRECACHE_URLS = [
+  'index.html',
+  'cordova.js',
+  'favicon.png',
+  'css/index.css',
+  'js/index.js',
+  'js/install.js',
+  'audio/Ding.m4a',
+  'audio/Ding ding ding.m4a',
+  'img/down-icon.png',
+  'img/up-icon.png',
+  'img/Start-icon.png',
+  'img/Stop-icon.png',
+  'img/logo.png'
+];		
 
 // Names of the two caches used in this version of the service worker.
 const PRECACHE = `precache-${version}`;

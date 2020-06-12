@@ -104,25 +104,9 @@
 	<!-- PWA Install JS. -->
 	<script src="js/install.js"></script>	
     <script type="text/javascript">
-	const version = 'v1.001';
+	const version = 'v1.002';
 	if (!isPhoneGap){
-		// PWA Items...
-		// A list of local resources we always want to be cached.
-		const PRECACHE_URLS = [
-		  'index.html',
-		  'cordova.js',
-		  'favicon.png',
-		  'css/index.css',
-		  'js/index.js',
-		  'js/install.js',
-		  'audio/Ding.m4a',
-		  'audio/Ding ding ding.m4a',
-		  'img/down-icon.png',
-		  'img/up-icon.png',
-		  'img/Start-icon.png',
-		  'img/Stop-icon.png',
-		  'img/logo.png'
-		];		
+		// PWA
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', () => {
 			navigator.serviceWorker.register('service-worker.js')
