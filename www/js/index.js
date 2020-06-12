@@ -481,6 +481,7 @@ function initialize(){
 	fadeout('initialising');
 	fadein('deviceready');
 	var message = '<h1>Welcome to the Mindfulness Teaching Timer App...</h1>';
+	message += `<p style="text-align:left;">Version ${version}</p>`;
 	message += '<ul style="text-align:left;">';
 	message += '<li>Check your device is on <b>Silent/Do Not Disturb</b>!</li>';
 	if (isPhoneGap) {

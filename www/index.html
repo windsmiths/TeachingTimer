@@ -22,37 +22,32 @@
 <html>
 
 <head>
+	<!-- General items -->
+    <title>Mindfulness Teaching Timer</title>	
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="icon" href="favicon.png" type="image/png" sizes="16x16">	
+	<!-- PhoneGap items -->
 	<meta name="description" content="Mindfulness Teaching Timer">
 	<meta name="theme-color" content="#3367D6"/>
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <!-- CSP declaration. Create your own at http://cspisawesome.com. -->
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
-    <!-- Good default declaration:
-    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-        * Enable inline JS: add 'unsafe-inline' to default-src
-        * Enable eval(): add 'unsafe-eval' to default-src
-    * Create your own at http://cspisawesome.com
-    -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
-
-    <link rel="stylesheet" type="text/css" href="css/index.css" />
-	<link rel="icon" href="favicon.png" type="image/png" sizes="16x16">
+	<!-- PWA items -->
 	<link rel="manifest" href="manifest.webmanifest">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-title" content="Mindfulness Teaching Timer">	
 	<link rel="apple-touch-icon" href="res/icon/android/xxxhdpi.png">
-    <title>Mindfulness Teaching Timer</title>
 </head>
 
 <body>
+	<!-- PhoneGap - cordova.js is either provided by PhoneGap (isPhoneGap defaults to true) or locally (sets isPhoneGap to false) -->
 	<script type="text/javascript">var isPhoneGap = true;</script>
     <script type="text/javascript" src="cordova.js"></script>
+	<!-- Page Layout -->
     <div class="app" >
 		<div class="row">
 			<div class="panel col-12">
@@ -104,20 +99,40 @@
 		<!-- Test/Debug items End. -->
     </div>
 
-
+	<!-- Main JS. -->
     <script type="text/javascript" src="js/index.js"></script>
+	<!-- PWA Install JS. -->
 	<script src="js/install.js"></script>	
     <script type="text/javascript">
+	const version = 'v1.001';
 	if (!isPhoneGap){
-		document.getElementById("initialising").style.display = "none"
-		initialize();
+		// PWA Items...
+		// A list of local resources we always want to be cached.
+		const PRECACHE_URLS = [
+		  'index.html',
+		  'cordova.js',
+		  'favicon.png',
+		  'css/index.css',
+		  'js/index.js',
+		  'js/install.js',
+		  'audio/Ding.m4a',
+		  'audio/Ding ding ding.m4a',
+		  'img/down-icon.png',
+		  'img/up-icon.png',
+		  'img/Start-icon.png',
+		  'img/Stop-icon.png',
+		  'img/logo.png'
+		];		
 		if ('serviceWorker' in navigator) {
-		  window.addEventListener('load', () => {
+			window.addEventListener('load', () => {
 			navigator.serviceWorker.register('service-worker.js')
 				.then((reg) => {
 				  console.log('Service worker registered.', reg);
 				});
-		  });
+			});	
+		// PWA End
+		document.getElementById("initialising").style.display = "none"
+		initialize();
 		}		
 	} else {
 		app.initialize();
