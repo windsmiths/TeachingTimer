@@ -194,6 +194,12 @@ button {
 	padding:0;
 	margin:0; 
 }
+@media only screen and (max-height: 580px) {
+  /* For smaller mobiles: */
+  .timer {
+    font-size:48px;
+  }
+}
 
 .test {
 	background-color:red;	
