@@ -203,14 +203,14 @@ button {
 	height: 20px;
 }
 
-@media only screen and (max-device-aspect-ratio: 1/1) {
+@media only screen and (max-aspect-ratio: 1/1) {
   /* For mobile phones: */
   [class*="col-"] {
     width: 100%;
   }
 }
 
-@media only screen and (max-device-height: 580px) and (max-device-width: 580px) {
+@media only screen and (max-height: 580px) and (max-width: 580px) {
   /* For smaller mobiles: */
   body, button {
 	font-size:12px;
@@ -223,7 +223,7 @@ button {
   }
 }
 
-@media only screen and (max-device-height: 500px) and (max-device-width: 500px) {
+@media only screen and (max-height: 500px) and (max-width: 500px) {
   /* For smaller mobiles: */
   body, button {
 	font-size:10px;
