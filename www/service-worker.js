@@ -14,7 +14,7 @@
 // Change version when you update any of the local resources, which will
 // in turn trigger the install event again.  
 // When changing version - change in index.html too!
-const version = 'v1.003';
+const version = 'v1.004';
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
   'index.html',
