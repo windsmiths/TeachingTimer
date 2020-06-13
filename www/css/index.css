@@ -224,7 +224,7 @@ button {
 }
 
 @media only screen and (max-height: 500px) and (max-width: 500px) {
-  /* For smaller mobiles: */
+  /* For very small mobiles: */
   body, button {
 	font-size:10px;
   }
