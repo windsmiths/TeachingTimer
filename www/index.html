@@ -34,7 +34,7 @@
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     <!-- CSP declaration. Create your own at http://cspisawesome.com. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'" />
 	<!-- PWA items -->
 	<link rel="manifest" href="manifest.webmanifest">
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -105,7 +105,7 @@
 	<script src="js/install.js"></script>	
     <script type="text/javascript">
 	// When changing version - change in service-worker.js too!
-	const version = 'v1.003';
+	const version = 'v1.004';
 	if (!isPhoneGap){
 		// PWA
 		if ('serviceWorker' in navigator) {
