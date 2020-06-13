@@ -11,8 +11,9 @@
  limitations under the License.
  */
 
-// Change version to v2, etc. when you update any of the local resources, which will
-// in turn trigger the install event again.
+// Change version when you update any of the local resources, which will
+// in turn trigger the install event again.  
+// When changing version - change in index.html too!
 const version = 'v1.002';
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
@@ -62,6 +63,9 @@ self.addEventListener('activate', event => {
 // If no response is found, it populates the runtime cache with the response
 // from the network before returning it to the page.
 self.addEventListener('fetch', event => {
+  // DevTools opening will trigger these o-i-c requests, which this SW can't handle.
+  // https://github.com/paulirish/caltrainschedule.io/issues/49	
+  if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') return;
   // Skip cross-origin requests, like those for Google Analytics.
   if (event.request.url.startsWith(self.location.origin)) {
     event.respondWith(
