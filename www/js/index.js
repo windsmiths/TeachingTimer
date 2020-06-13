@@ -425,6 +425,8 @@ class AudioButtonHandler{
 	
 	buttonPress() {
 		log(`${this.label} pressed.  IsPlaying = ${this.isPlaying}`);
+		if (!audioHandler)
+			audioHandler = new AudioHandler();
 		if (this.isPlaying) {
 			// stop - events handlers will sort everything else out...
 			audioHandler.stop();
@@ -472,7 +474,6 @@ function initialize(){
 	storage = new Storage();
 	lessonTimer = new TimerWidget('Lesson', 'lesson', 3600);
 	intervalTimer = new TimerWidget('Interval', 'interval', 600);
-	audioHandler = new AudioHandler();
 	if (isPhoneGap) 
 		window.plugins.insomnia.keepAwake();
 	// Do first tick...
