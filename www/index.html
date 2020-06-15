@@ -94,6 +94,7 @@
 			<p>Press again to exit...</p>
 		</div>
 		<div id="buttonInstall" style="text-align:right" hidden>Install as App</div>
+		<audio id="audio"></audio>
 		<!-- Test/Debug items here (edit to make visible when required)... -->
 		<button type="button" class="test" onclick="javascript:app.onBackButton()" style="display:none;">Test</button>	
 		<!-- Test/Debug items End. -->
@@ -105,7 +106,7 @@
 	<script src="js/install.js"></script>	
     <script type="text/javascript">
 	// When changing version - change in service-worker.js too!
-	const version = 'v1.004';
+	const version = 'v1.005';
 	if (!isPhoneGap){
 		// PWA
 		if ('serviceWorker' in navigator) {
