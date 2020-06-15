@@ -321,7 +321,7 @@ class AudioHandler{
 		if(isPhoneGap)
 			this.player = null;
 		else
-			this.player = new Audio();
+			this.player = document.getElementById('audio');
 		this.url = '';
 		this.onEnd = null;
 		this.enableOnEnd = false;
@@ -481,8 +481,11 @@ function initialize(){
 	// We're now ready
 	fadeout('initialising');
 	fadein('deviceready');
+	var platform = 'p';
+	if (isPhoneGap)
+		platform = 'a';
 	var message = '<h1>Welcome to the Mindfulness Teaching Timer App...</h1>';
-	message += `<p>Version ${version}</p>`;
+	message += `<p>Version ${version}${platform}</p>`;
 	message += '<ul style="text-align:left;">';
 	message += '<li>Check your device is on <b>Silent/Do Not Disturb</b>!</li>';
 	if (isPhoneGap) {
