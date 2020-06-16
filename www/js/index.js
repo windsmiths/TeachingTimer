@@ -425,8 +425,10 @@ class AudioButtonHandler{
 	
 	buttonPress() {
 		log(`${this.label} pressed.  IsPlaying = ${this.isPlaying}`);
-		if (!audioHandler)
+		if (!audioHandler){
 			audioHandler = new AudioHandler();
+			audioHandler.player.play();
+		}
 		if (this.isPlaying) {
 			// stop - events handlers will sort everything else out...
 			audioHandler.stop();
