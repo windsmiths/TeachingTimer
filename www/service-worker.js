@@ -70,35 +70,10 @@ self.addEventListener('fetch', event => {
   // Skip cross-origin requests, like those for Google Analytics.
   if (event.request.url.startsWith(self.location.origin)) {
 	if (event.request.headers.get('range')) {
-		var pos =
-		Number(/^bytes\=(\d+)\-$/g.exec(event.request.headers.get('range'))[1]);
-		// console.log('Range request for', event.request.url, ', starting position:', pos);
-		event.respondWith(
-		  caches.open(PRECACHE)
-		  .then(function(cache) {
-			return cache.match(event.request.url);
-		  }).then(function(res) {
-			if (!res) {
-			  return fetch(event.request)
-			  .then(res => {
-				return res.arrayBuffer();
-			  });
-			}
-			return res.arrayBuffer();
-		  }).then(function(ab) {
-			return new Response(
-			  ab.slice(pos),
-			  {
-				status: 206,
-				statusText: 'Partial Content',
-				headers: [
-				  // ['Content-Type', 'video/webm'],
-				  ['Content-Range', 'bytes ' + pos + '-' +
-					(ab.byteLength - 1) + '/' + ab.byteLength]]
-			  });
-		  }));
+		console.log('Range request for', event.request.url);
+		return returnRangeRequest(event.request, PRECACHE)
 	} else {	  
-		// console.log('Non-range request for', event.request.url);
+		console.log('Non-range request for', event.request.url);
 		event.respondWith(
 		  caches.match(event.request).then(cachedResponse => {
 			if (cachedResponse) {
@@ -118,3 +93,49 @@ self.addEventListener('fetch', event => {
 	}
   }
 });
+
+function returnRangeRequest(request, cacheName) {
+  return caches
+    .open(cacheName)
+    .then(function(cache) {
+      return cache.match(request.url);
+    })
+    .then(function(res) {
+      if (!res) {
+        return fetch(request)
+          .then(res => {
+            const clonedRes = res.clone();
+            return caches
+              .open(cacheName)
+              .then(cache => cache.put(request, clonedRes))
+              .then(() => res);
+          })
+          .then(res => {
+            return res.arrayBuffer();
+          });
+      }
+      return res.arrayBuffer();
+    })
+    .then(function(arrayBuffer) {
+      const bytes = /^bytes\=(\d+)\-(\d+)?$/g.exec(
+        request.headers.get('range')
+      );
+      if (bytes) {
+        const start = Number(bytes[1]);
+        const end = Number(bytes[2]) || arrayBuffer.byteLength - 1;
+        return new Response(arrayBuffer.slice(start, end + 1), {
+          status: 206,
+          statusText: 'Partial Content',
+          headers: [
+            ['Content-Range', `bytes ${start}-${end}/${arrayBuffer.byteLength}`]
+          ]
+        });
+      } else {
+        return new Response(null, {
+          status: 416,
+          statusText: 'Range Not Satisfiable',
+          headers: [['Content-Range', `*/${arrayBuffer.byteLength}`]]
+        });
+      }
+    });
+}
