@@ -14,7 +14,7 @@
 // Change version when you update any of the local resources, which will
 // in turn trigger the install event again.  
 // When changing version - change in index.html too!
-const version = 'v1.008';
+const version = 'v1.009';
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
   'index.html',
@@ -65,24 +65,56 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   // DevTools opening will trigger these o-i-c requests, which this SW can't handle.
   // https://github.com/paulirish/caltrainschedule.io/issues/49	
+  // console.log('Handling fetch event for', event.request.url);
   if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') return;
   // Skip cross-origin requests, like those for Google Analytics.
   if (event.request.url.startsWith(self.location.origin)) {
-    event.respondWith(
-      caches.match(event.request).then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
+	if (event.request.headers.get('range')) {
+		var pos =
+		Number(/^bytes\=(\d+)\-$/g.exec(event.request.headers.get('range'))[1]);
+		// console.log('Range request for', event.request.url, ', starting position:', pos);
+		event.respondWith(
+		  caches.open(PRECACHE)
+		  .then(function(cache) {
+			return cache.match(event.request.url);
+		  }).then(function(res) {
+			if (!res) {
+			  return fetch(event.request)
+			  .then(res => {
+				return res.arrayBuffer();
+			  });
+			}
+			return res.arrayBuffer();
+		  }).then(function(ab) {
+			return new Response(
+			  ab.slice(pos),
+			  {
+				status: 206,
+				statusText: 'Partial Content',
+				headers: [
+				  // ['Content-Type', 'video/webm'],
+				  ['Content-Range', 'bytes ' + pos + '-' +
+					(ab.byteLength - 1) + '/' + ab.byteLength]]
+			  });
+		  }));
+	} else {	  
+		// console.log('Non-range request for', event.request.url);
+		event.respondWith(
+		  caches.match(event.request).then(cachedResponse => {
+			if (cachedResponse) {
+			  return cachedResponse;
+			}
 
-        return caches.open(RUNTIME).then(cache => {
-          return fetch(event.request).then(response => {
-            // Put a copy of the response in the runtime cache.
-            return cache.put(event.request, response.clone()).then(() => {
-              return response;
-            });
-          });
-        });
-      })
-    );
+			return caches.open(RUNTIME).then(cache => {
+			  return fetch(event.request).then(response => {
+				// Put a copy of the response in the runtime cache.
+				return cache.put(event.request, response.clone()).then(() => {
+				  return response;
+				});
+			  });
+			});
+		  })
+		);
+	}
   }
 });

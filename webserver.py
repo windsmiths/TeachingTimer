@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 #test on python 3.4 ,python of lower version  has different module organization.
-import http.server
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from RangeHTTPServer import RangeHTTPRequestHandler
 import socketserver
 
 PORT = 8000
 
-Handler = http.server.SimpleHTTPRequestHandler
+Handler = RangeHTTPRequestHandler
 
 Handler.extensions_map={
-        '.manifest': 'text/cache-manifest',
+    '.manifest': 'text/cache-manifest',
 	'.html': 'text/html',
-        '.png': 'image/png',
+    '.png': 'image/png',
 	'.jpg': 'image/jpg',
 	'.svg':	'image/svg+xml',
 	'.css':	'text/css',
